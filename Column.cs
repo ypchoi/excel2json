@@ -2,26 +2,26 @@
 {
     abstract class Column
     {
-        protected FieldScheme m_scheme;
+        protected ColumnScheme m_scheme;
 
-        public Column(FieldScheme scheme)
+        public Column(ColumnScheme scheme)
         {
             m_scheme = scheme;
         }
 
         public abstract bool Parse(string text);
 
-        static Column Create(FieldScheme.eType type, FieldScheme scheme)
+        static Column Create(ColumnScheme.eType type, ColumnScheme scheme)
         {
             switch (type)
             {
-                case FieldScheme.eType.Int:
+                case ColumnScheme.eType.Int:
                     return new ColumnInt(scheme);
-                case FieldScheme.eType.Float:
+                case ColumnScheme.eType.Float:
                     return new ColumnFloat(scheme);
-                case FieldScheme.eType.Bool:
+                case ColumnScheme.eType.Bool:
                     return new ColumnBool(scheme);
-                case FieldScheme.eType.String:
+                case ColumnScheme.eType.String:
                     return new ColumnString(scheme);
                 default:
                     return null;
@@ -33,7 +33,7 @@
     {
         int m_value = 0;
 
-        public ColumnInt(FieldScheme scheme)
+        public ColumnInt(ColumnScheme scheme)
             : base(scheme)
         {
         }
@@ -53,7 +53,7 @@
     {
         float m_value;
 
-        public ColumnFloat(FieldScheme scheme)
+        public ColumnFloat(ColumnScheme scheme)
             : base(scheme)
         {
         }
@@ -73,7 +73,7 @@
     {
         bool m_value;
 
-        public ColumnBool(FieldScheme scheme)
+        public ColumnBool(ColumnScheme scheme)
             : base(scheme)
         {
         }
@@ -103,7 +103,7 @@
     {
         string m_value;
 
-        public ColumnString(FieldScheme scheme)
+        public ColumnString(ColumnScheme scheme)
             : base(scheme)
         {
         }

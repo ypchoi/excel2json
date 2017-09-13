@@ -9,7 +9,7 @@ namespace ExcelToJson
     class Sheet
     {
         private IExcelDataReader m_excelReader;
-        private List<FieldScheme> m_schemes = new List<FieldScheme>();
+        private List<ColumnScheme> m_schemes = new List<ColumnScheme>();
 
         public Sheet()
         {
@@ -55,11 +55,11 @@ namespace ExcelToJson
                 return false;
             }
 
-            m_schemes.AddRange(Enumerable.Repeat(new FieldScheme(), m_excelReader.FieldCount));
+            m_schemes.AddRange(Enumerable.Repeat(new ColumnScheme(), m_excelReader.FieldCount));
 
             for (int i = 0; i < m_schemes.Count; ++i)
             {
-                FieldScheme scheme = m_schemes[i];
+                ColumnScheme scheme = m_schemes[i];
                 scheme.Name = m_excelReader.GetString(i);
             }
 
@@ -84,11 +84,11 @@ namespace ExcelToJson
 
             for (int i = 0; i < m_schemes.Count; ++i)
             {
-                FieldScheme scheme = m_schemes[i];
+                ColumnScheme scheme = m_schemes[i];
                 string text = m_excelReader.GetString(i);
-                FieldScheme.eType type = FieldScheme.eType.None;
+                ColumnScheme.eType type = ColumnScheme.eType.None;
 
-                if (Enum.TryParse<FieldScheme.eType>(text, true, out type))
+                if (Enum.TryParse<ColumnScheme.eType>(text, true, out type))
                 {
                     scheme.Type = type;
                 }
@@ -106,7 +106,7 @@ namespace ExcelToJson
                 Console.WriteLine(string.Format("Invalid type {0}\n", types));
                 Console.WriteLine("Available types are below");
 
-                foreach (FieldScheme.eType t in Enum.GetValues(typeof(FieldScheme.eType)))
+                foreach (ColumnScheme.eType t in Enum.GetValues(typeof(ColumnScheme.eType)))
                 {
                     Console.WriteLine("- " + t.ToString());
                 }

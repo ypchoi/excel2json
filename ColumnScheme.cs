@@ -2,7 +2,7 @@
 
 namespace ExcelToJson
 {
-    class FieldScheme
+    class ColumnScheme
     {
         public enum eType
         {
@@ -23,7 +23,7 @@ namespace ExcelToJson
             get; set;
         }
 
-        public FieldScheme()
+        public ColumnScheme()
         {
             Type = eType.None;
             Name = "";
