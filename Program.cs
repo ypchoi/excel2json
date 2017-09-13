@@ -20,14 +20,23 @@ namespace ExcelToJson
             string sourcePath = args[0];
             string targetPath = (1 < args.Length) ? args[1] : Path.ChangeExtension(sourcePath, "json");
 
-            Sheet data = new Sheet();
-            if (!data.Load(sourcePath))
+            try
             {
+                Sheet data = new Sheet();
+                if (!data.Load(sourcePath))
+                {
+                    return 1;
+                }
+
+                JavaScriptSerializer serializer = new JavaScriptSerializer();
+                serializer.Serialize(null);
+            }
+            catch (DirectoryNotFoundException /*e*/)
+            {
+                Console.WriteLine("File not exist : {0}", sourcePath);
                 return 1;
             }
 
-            JavaScriptSerializer serializer = new JavaScriptSerializer();
-            serializer.Serialize(null);
             return 0;
         }
 
