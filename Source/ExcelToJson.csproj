@@ -52,10 +52,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Excel.4.5">
-      <HintPath>Lib\Excel.4.5.dll</HintPath>
+      <HintPath>..\Lib\Excel.4.5.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
-      <HintPath>Lib\ICSharpCode.SharpZipLib.dll</HintPath>
+      <HintPath>..\Lib\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
