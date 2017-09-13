@@ -1,0 +1,8 @@
+﻿
+namespace ExcelToJson
+{
+    class Row
+    {
+
+    }
+}
