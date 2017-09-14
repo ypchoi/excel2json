@@ -9,7 +9,8 @@ namespace ExcelToJson
     class Sheet
     {
         private IExcelDataReader m_excelReader;
-        private List<ColumnScheme> m_schemes = new List<ColumnScheme>();
+        private List<CellScheme> m_schemes = new List<CellScheme>();
+        private List<Row> m_rows = new List<Row>();
 
         public Sheet()
         {
@@ -19,10 +20,12 @@ namespace ExcelToJson
         {
             m_excelReader = null;
             m_schemes.Clear();
+            m_rows.Clear();
 
             using (FileStream stream = File.Open(path, FileMode.Open, FileAccess.Read))
             {
                 m_excelReader = ExcelReaderFactory.CreateOpenXmlReader(stream);
+
                 if (m_excelReader == null)
                 {
                     Console.WriteLine("Can not make reader");
@@ -41,6 +44,7 @@ namespace ExcelToJson
 
                 if (!ReadRows())
                 {
+                    return false;
                 }
             }
 
@@ -55,12 +59,11 @@ namespace ExcelToJson
                 return false;
             }
 
-            m_schemes.AddRange(Enumerable.Repeat(new ColumnScheme(), m_excelReader.FieldCount));
-
-            for (int i = 0; i < m_schemes.Count; ++i)
+            for (int i = 0; i < m_excelReader.FieldCount; ++i)
             {
-                ColumnScheme scheme = m_schemes[i];
+                CellScheme scheme = new CellScheme();
                 scheme.Name = m_excelReader.GetString(i);
+                m_schemes.Add(scheme);
             }
 
             return true;
@@ -84,11 +87,11 @@ namespace ExcelToJson
 
             for (int i = 0; i < m_schemes.Count; ++i)
             {
-                ColumnScheme scheme = m_schemes[i];
+                CellScheme scheme = m_schemes[i];
                 string text = m_excelReader.GetString(i);
-                ColumnScheme.eType type = ColumnScheme.eType.None;
+                CellScheme.eType type = CellScheme.eType.None;
 
-                if (Enum.TryParse<ColumnScheme.eType>(text, true, out type))
+                if (Enum.TryParse<CellScheme.eType>(text, true, out type))
                 {
                     scheme.Type = type;
                 }
@@ -98,30 +101,41 @@ namespace ExcelToJson
                 }
             }
 
-            bool success = (invalidTypes.Count == 0);
-
-            if (!success)
+            if (invalidTypes.Count != 0)
             {
                 string types = string.Join(", ", invalidTypes);
                 Console.WriteLine(string.Format("Invalid type {0}\n", types));
                 Console.WriteLine("Available types are below");
 
-                foreach (ColumnScheme.eType t in Enum.GetValues(typeof(ColumnScheme.eType)))
+                foreach (CellScheme.eType t in Enum.GetValues(typeof(CellScheme.eType)))
                 {
                     Console.WriteLine("- " + t.ToString());
                 }
+
+                return false;
             }
 
-            return success;
+            return true;
         }
 
         bool ReadRows()
         {
             while (m_excelReader.Read())
             {
+                Row row = new Row(m_schemes);
+                if (!row.Read(m_excelReader))
+                    return false;
+
+                m_rows.Add(row);
             }
 
             return true;
+        }
+
+        public bool Save(string path)
+        {
+            JsonWriter writer = new JsonWriter("\t");
+            return writer.Write(path, m_rows);
         }
     }
 }

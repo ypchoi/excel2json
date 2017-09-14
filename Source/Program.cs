@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Web.Script.Serialization;
-using Excel;
 
 namespace ExcelToJson
 {
@@ -28,8 +24,10 @@ namespace ExcelToJson
                     return 1;
                 }
 
-                JavaScriptSerializer serializer = new JavaScriptSerializer();
-                serializer.Serialize(null);
+                if (!data.Save(targetPath))
+                {
+                    return 1;
+                }
             }
             catch (DirectoryNotFoundException /*e*/)
             {

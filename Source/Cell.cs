@@ -1,39 +1,39 @@
 ﻿namespace ExcelToJson
 {
-    abstract class Column
+    abstract class Cell
     {
-        protected ColumnScheme m_scheme;
+        protected CellScheme m_scheme;
 
-        public Column(ColumnScheme scheme)
+        public Cell(CellScheme scheme)
         {
             m_scheme = scheme;
         }
 
         public abstract bool Parse(string text);
 
-        static Column Create(ColumnScheme.eType type, ColumnScheme scheme)
+        public static Cell Create(CellScheme scheme)
         {
-            switch (type)
+            switch (scheme.Type)
             {
-                case ColumnScheme.eType.Int:
-                    return new ColumnInt(scheme);
-                case ColumnScheme.eType.Float:
-                    return new ColumnFloat(scheme);
-                case ColumnScheme.eType.Bool:
-                    return new ColumnBool(scheme);
-                case ColumnScheme.eType.String:
-                    return new ColumnString(scheme);
+                case CellScheme.eType.Int:
+                    return new CellInt(scheme);
+                case CellScheme.eType.Float:
+                    return new CellFloat(scheme);
+                case CellScheme.eType.Bool:
+                    return new CellBool(scheme);
+                case CellScheme.eType.String:
+                    return new CellString(scheme);
                 default:
                     return null;
             }
         }
     }
 
-    class ColumnInt : Column
+    class CellInt : Cell
     {
         int m_value = 0;
 
-        public ColumnInt(ColumnScheme scheme)
+        public CellInt(CellScheme scheme)
             : base(scheme)
         {
         }
@@ -45,15 +45,15 @@
 
         public override string ToString()
         {
-            return string.Format("\"{0}\": {1}", m_scheme.Name, m_value.ToString());
+            return string.Format("\"{0}\":{1}", m_scheme.Name, m_value.ToString());
         }
     }
 
-    class ColumnFloat : Column
+    class CellFloat : Cell
     {
         float m_value;
 
-        public ColumnFloat(ColumnScheme scheme)
+        public CellFloat(CellScheme scheme)
             : base(scheme)
         {
         }
@@ -65,15 +65,15 @@
 
         public override string ToString()
         {
-            return string.Format("\"{0}\": {1}", m_scheme.Name, m_value.ToString());
+            return string.Format("\"{0}\":{1}", m_scheme.Name, m_value.ToString());
         }
     }
 
-    class ColumnBool : Column
+    class CellBool : Cell
     {
         bool m_value;
 
-        public ColumnBool(ColumnScheme scheme)
+        public CellBool(CellScheme scheme)
             : base(scheme)
         {
         }
@@ -95,15 +95,15 @@
 
         public override string ToString()
         {
-            return string.Format("\"{0}\": {1}", m_scheme.Name, m_value.ToString());
+            return string.Format("\"{0}\":{1}", m_scheme.Name, m_value ? 1 : 0);
         }
     }
 
-    class ColumnString : Column
+    class CellString : Cell
     {
         string m_value;
 
-        public ColumnString(ColumnScheme scheme)
+        public CellString(CellScheme scheme)
             : base(scheme)
         {
         }
@@ -116,7 +116,7 @@
 
         public override string ToString()
         {
-            return string.Format("\"{0}\": \"{1}\"", m_scheme.Name, m_value.ToString());
+            return string.Format("\"{0}\":\"{1}\"", m_scheme.Name, m_value.ToString());
         }
     }
 }
