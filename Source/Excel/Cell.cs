@@ -4,25 +4,31 @@
     {
         protected CellScheme m_scheme;
 
-        public Cell(CellScheme scheme)
+        public uint ColumnIndex
         {
+            get; private set;
+        }
+
+        public Cell(uint columnIndex, CellScheme scheme)
+        {
+            ColumnIndex = columnIndex;
             m_scheme = scheme;
         }
 
         public abstract bool Parse(string text);
 
-        public static Cell Create(CellScheme scheme)
+        public static Cell Create(uint columnIndex, CellScheme scheme)
         {
             switch (scheme.Type)
             {
                 case CellScheme.eType.Int:
-                    return new CellInt(scheme);
+                    return new CellInt(columnIndex, scheme);
                 case CellScheme.eType.Float:
-                    return new CellFloat(scheme);
+                    return new CellFloat(columnIndex, scheme);
                 case CellScheme.eType.Bool:
-                    return new CellBool(scheme);
+                    return new CellBool(columnIndex, scheme);
                 case CellScheme.eType.String:
-                    return new CellString(scheme);
+                    return new CellString(columnIndex, scheme);
                 default:
                     return null;
             }
@@ -33,8 +39,8 @@
     {
         int m_value = 0;
 
-        public CellInt(CellScheme scheme)
-            : base(scheme)
+        public CellInt(uint columnIndex, CellScheme scheme)
+            : base(columnIndex, scheme)
         {
         }
 
@@ -53,8 +59,8 @@
     {
         float m_value;
 
-        public CellFloat(CellScheme scheme)
-            : base(scheme)
+        public CellFloat(uint columnIndex, CellScheme scheme)
+            : base(columnIndex, scheme)
         {
         }
 
@@ -73,8 +79,8 @@
     {
         bool m_value;
 
-        public CellBool(CellScheme scheme)
-            : base(scheme)
+        public CellBool(uint columnIndex, CellScheme scheme)
+            : base(columnIndex, scheme)
         {
         }
 
@@ -103,8 +109,8 @@
     {
         string m_value;
 
-        public CellString(CellScheme scheme)
-            : base(scheme)
+        public CellString(uint columnIndex, CellScheme scheme)
+            : base(columnIndex, scheme)
         {
         }
 

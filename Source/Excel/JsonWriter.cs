@@ -15,8 +15,6 @@ namespace ExcelToJson
 
         public bool Write(string path, List<Row> rows)
         {
-            Console.WriteLine("Write {0} rows", rows.Count);
-
             try
             {
                 using (StreamWriter file = new StreamWriter(path))
@@ -34,13 +32,12 @@ namespace ExcelToJson
 
                     file.WriteLine("]");
 
-                    Console.WriteLine("Writing finished");
                     return true;
                 }
             }
             catch (DirectoryNotFoundException /*e*/)
             {
-                Console.WriteLine("Can not open file : {0}", path);
+                Console.WriteLine("- Can not write file : {0}", path);
                 return false;
             }
         }

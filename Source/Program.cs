@@ -16,24 +16,18 @@ namespace ExcelToJson
             string sourcePath = args[0];
             string targetPath = (1 < args.Length) ? args[1] : Path.ChangeExtension(sourcePath, "json");
 
-            try
+            if (!Path.HasExtension(targetPath))
             {
-                Sheet data = new Sheet();
-                if (!data.Load(sourcePath))
-                {
-                    return 1;
-                }
+                targetPath = Path.ChangeExtension(targetPath, "json");
+            }
 
-                if (!data.Save(targetPath))
-                {
-                    return 1;
-                }
-            }
-            catch (DirectoryNotFoundException /*e*/)
-            {
-                Console.WriteLine("File not exist : {0}", sourcePath);
+            Document document = new Document();
+
+            if (!document.Load(sourcePath))
                 return 1;
-            }
+
+            if (!document.Save(targetPath))
+                return 1;
 
             return 0;
         }

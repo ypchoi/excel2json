@@ -69,11 +69,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cell.cs" />
-    <Compile Include="JsonWriter.cs" />
-    <Compile Include="Row.cs" />
-    <Compile Include="Sheet.cs" />
-    <Compile Include="CellScheme.cs" />
+    <Compile Include="Excel\Cell.cs" />
+    <Compile Include="Excel\Document.cs" />
+    <Compile Include="Excel\JsonWriter.cs" />
+    <Compile Include="Excel\Row.cs" />
+    <Compile Include="Excel\Sheet.cs" />
+    <Compile Include="Excel\CellScheme.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
