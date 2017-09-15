@@ -14,11 +14,11 @@ namespace ExcelToJson
             }
 
             string sourceIn = args[0];
+            string dir = Path.GetDirectoryName(sourceIn);
+            string pattern = Path.GetFileName(sourceIn);
 
             string[] sourceFiles = Directory.GetFiles(
-                Path.GetDirectoryName(sourceIn),
-                Path.GetFileName(sourceIn),
-                SearchOption.AllDirectories);
+                0 < dir.Length ? dir : "..\\", pattern, SearchOption.AllDirectories);
 
             foreach (string sourcePath in sourceFiles)
             {
