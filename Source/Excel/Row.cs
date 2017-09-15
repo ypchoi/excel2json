@@ -46,7 +46,7 @@ namespace ExcelToJson
 
                 if (!cell.Parse(text))
                 {
-                    Console.WriteLine("- Parse failed Line {0}, Column {1} : {2}", m_rowIndex + 2, cell.ColumnIndex + 1, text);
+                    Console.WriteLine("Parse failed Line {0}, Column {1} : {2}", m_rowIndex + 2, cell.ColumnIndex + 1, text);
                     return false;
                 }
             }

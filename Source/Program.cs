@@ -13,21 +13,23 @@ namespace ExcelToJson
                 return 1;
             }
 
-            string sourcePath = args[0];
-            string targetPath = (1 < args.Length) ? args[1] : Path.ChangeExtension(sourcePath, "json");
+            string sourceIn = args[0];
 
-            if (!Path.HasExtension(targetPath))
+            string[] sourceFiles = Directory.GetFiles(
+                Path.GetDirectoryName(sourceIn),
+                Path.GetFileName(sourceIn),
+                SearchOption.AllDirectories);
+
+            foreach (string sourcePath in sourceFiles)
             {
-                targetPath = Path.ChangeExtension(targetPath, "json");
+                Document document = new Document();
+                if (!document.Load(sourcePath))
+                    continue;
+
+                string targetPath = Path.ChangeExtension(sourcePath, "json");
+                if (!document.Save(targetPath))
+                    continue;
             }
-
-            Document document = new Document();
-
-            if (!document.Load(sourcePath))
-                return 1;
-
-            if (!document.Save(targetPath))
-                return 1;
 
             return 0;
         }
@@ -35,9 +37,9 @@ namespace ExcelToJson
         static void Usage()
         {
             Console.WriteLine("Usage");
-            Console.WriteLine("ExelToJson <SourcePath> [<TargetPath>]");
-            Console.WriteLine("- Example1) ExcelToJson Test.xlsx Test.json");
-            Console.WriteLine("- Example2) ExcelToJson Test.xlsx");
+            Console.WriteLine("ExelToJson <SourcePath>");
+            Console.WriteLine("- Example) ExcelToJson.exe Test.xlsx");
+            Console.WriteLine("- Example) ExcelToJson.exe C:\\Dir\\*.*");
         }
     }
 }

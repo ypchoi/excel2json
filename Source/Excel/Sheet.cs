@@ -29,20 +29,16 @@ namespace ExcelToJson
             m_schemes.Clear();
             m_rows.Clear();
 
-            if (ReadFieldNames(reader))
-            {
-                if (ReadFieldTypes(reader))
-                {
-                    if (ReadRows(reader))
-                    {
-                        Console.WriteLine("- Success\r\n");
-                        return true;
-                    }
-                }
-            }
+            if (!ReadFieldNames(reader))
+                return false;
 
-            Console.WriteLine("- Fail\r\n");
-            return false;
+            if (!ReadFieldTypes(reader))
+                return false;
+
+            if (!ReadRows(reader))
+                return false;
+
+            return true;
         }
 
         bool ReadFieldNames(IExcelDataReader reader)
@@ -67,13 +63,13 @@ namespace ExcelToJson
         {
             if (!reader.Read())
             {
-                Console.WriteLine("- Sheet \"{0}\" does not have field type row", Name);
+                Console.WriteLine("Sheet \"{0}\" does not have field type row", Name);
                 return false;
             }
 
             if (reader.FieldCount != m_schemes.Count)
             {
-                Console.WriteLine("- Sheet \"{0}\"s field name and type count are different", Name);
+                Console.WriteLine("Sheet \"{0}\"s field name and type count are different", Name);
                 return false;
             }
 
@@ -120,14 +116,7 @@ namespace ExcelToJson
             Console.WriteLine("Save sheet \"{0}\" to \"{1}\"", Name, path);
 
             JsonWriter writer = new JsonWriter("\t");
-            if (writer.Write(path, m_rows))
-            {
-                Console.WriteLine("- Success\r\n");
-                return true;
-            }
-
-            Console.WriteLine("- Fail\r\n");
-            return false;
+            return writer.Write(path, m_rows);
         }
     }
 }

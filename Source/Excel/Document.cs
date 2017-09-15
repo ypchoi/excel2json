@@ -15,6 +15,8 @@ namespace ExcelToJson
 
         public bool Load(string path)
         {
+            Console.WriteLine("Load file \"{0}\"", path);
+
             m_sheets.Clear();
 
             try
@@ -32,28 +34,32 @@ namespace ExcelToJson
                     {
                         Sheet sheet = new Sheet(reader.Name);
                         if (!sheet.Load(reader))
-                            continue;
+                            return false;
 
                         m_sheets.Add(sheet);
                     }
                     while (reader.NextResult());
 
+                    Console.WriteLine("- Success\r\n");
                     return true;
                 }
             }
             catch (FileNotFoundException)
             {
-                Console.WriteLine("Can not read file : {0}", path);
+                Console.WriteLine("- Can not read file : {0}\r\n", path);
                 return false;
             }
         }
 
         public bool Save(string pathIn)
         {
+            Console.WriteLine("Save file \"{0}\"", pathIn);
+
             if (m_sheets.Count == 1)
             {
                 Sheet sheet = m_sheets[0];
-                return m_sheets[0].Save(pathIn);
+                if (!m_sheets[0].Save(pathIn))
+                    return false;
             }
             else
             {
@@ -70,9 +76,10 @@ namespace ExcelToJson
                     if (!sheet.Save(path))
                         return false;
                 }
-
-                return true;
             }
+
+            Console.WriteLine("- Success\r\n");
+            return true;
         }
     }
 }
