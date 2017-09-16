@@ -42,10 +42,10 @@ namespace ExcelToJson
 
         static void Usage()
         {
-            Console.WriteLine("Usage");
-            Console.WriteLine("ExelToJson <SourcePath>");
-            Console.WriteLine("- Example) ExcelToJson.exe Test.xlsx");
-            Console.WriteLine("- Example) ExcelToJson.exe C:\\Dir\\*.*");
+            Console.WriteLine("Usage\r\n");
+            Console.WriteLine("Exce2Json <SourcePath>");
+            Console.WriteLine("- Example) Exce2Json.exe Test.xlsx");
+            Console.WriteLine("- Example) Exce2Json.exe C:\\Dir\\*.*");
         }
     }
 }
