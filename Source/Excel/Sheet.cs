@@ -73,12 +73,21 @@ namespace ExcelToJson
                 return false;
             }
 
+            HashSet<string> typeNames = new HashSet<string>(
+                Enum.GetNames(typeof(CellScheme.eType)),
+                StringComparer.OrdinalIgnoreCase);
+
             for (int i = 0; i < m_schemes.Count; ++i)
             {
                 string text = reader.GetString(i);
-                CellScheme.eType type = CellScheme.eType.None;
+                if (!typeNames.Contains(text))
+                {
+                    Console.WriteLine("Sheet \"{0}\" has invalid type \"{1}\"", Name, text);
+                    return false;
+                }
 
-                if (!Enum.TryParse<CellScheme.eType>(text, true, out type))
+                CellScheme.eType type = CellScheme.eType.None;
+                if (!Enum.TryParse(text, true, out type))
                     return false;
 
                 m_schemes[i].Type = type;

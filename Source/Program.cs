@@ -20,6 +20,12 @@ namespace ExcelToJson
             string[] sourceFiles = Directory.GetFiles(
                 0 < dir.Length ? dir : "..\\", pattern, SearchOption.AllDirectories);
 
+            if (sourceFiles.Length == 0)
+            {
+                Console.WriteLine("Not exist any matching file : \"{0}\"", sourceIn);
+                return 1;
+            }
+
             foreach (string sourcePath in sourceFiles)
             {
                 Document document = new Document();

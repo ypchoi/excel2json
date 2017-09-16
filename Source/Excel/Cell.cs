@@ -9,6 +9,11 @@
             get; private set;
         }
 
+        public virtual bool IsSerializable
+        {
+            get { return true; }
+        }
+
         public Cell(uint columnIndex, CellScheme scheme)
         {
             ColumnIndex = columnIndex;
@@ -29,6 +34,8 @@
                     return new CellBool(columnIndex, scheme);
                 case CellScheme.eType.String:
                     return new CellString(columnIndex, scheme);
+                case CellScheme.eType.Comment:
+                    return new CellComment(columnIndex, scheme);
                 default:
                     return null;
             }
@@ -123,6 +130,29 @@
         public override string ToString()
         {
             return string.Format("\"{0}\":\"{1}\"", m_scheme.Name, m_value.ToString());
+        }
+    }
+
+    class CellComment : Cell
+    {
+        public override bool IsSerializable
+        {
+            get { return false; }
+        }
+
+        public CellComment(uint columnIndex, CellScheme scheme)
+            : base(columnIndex, scheme)
+        {
+        }
+
+        public override bool Parse(string text)
+        {
+            return true;
+        }
+
+        public override string ToString()
+        {
+            return "";
         }
     }
 }

@@ -11,6 +11,7 @@ namespace ExcelToJson
             Float,
             String,
             Bool,
+            Comment,
         }
 
         public eType Type

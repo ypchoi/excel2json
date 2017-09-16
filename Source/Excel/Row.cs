@@ -38,10 +38,13 @@ namespace ExcelToJson
 
             for (int i = 0; i < columnTexts.Count; ++i)
             {
-                string text = columnTexts[i];
                 Cell cell = m_cells[i];
+                string text = columnTexts[i];
 
-                if (text == null)
+                if (cell == null)
+                    return false;
+
+                if (!cell.IsSerializable || text == null)
                     continue;
 
                 if (!cell.Parse(text))
@@ -58,7 +61,10 @@ namespace ExcelToJson
         {
             List<string> cells = new List<string>();
             foreach (Cell cell in m_cells)
-                cells.Add(cell.ToString());
+            {
+                if (cell.IsSerializable)
+                    cells.Add(cell.ToString());
+            }
 
             string total = string.Join(", ", cells);
             return string.Format("{{{0}}}", total);

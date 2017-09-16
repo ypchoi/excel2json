@@ -35,9 +35,9 @@ namespace ExcelToJson
                     return true;
                 }
             }
-            catch (DirectoryNotFoundException /*e*/)
+            catch (Exception e)
             {
-                Console.WriteLine("- Can not write file : {0}", path);
+                Console.WriteLine("- Can not write file : {0} ({1})", path, e.Message);
                 return false;
             }
         }

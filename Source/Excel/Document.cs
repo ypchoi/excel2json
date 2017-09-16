@@ -44,9 +44,9 @@ namespace ExcelToJson
                     return true;
                 }
             }
-            catch (FileNotFoundException)
+            catch (Exception e)
             {
-                Console.WriteLine("- Can not read file : {0}\r\n", path);
+                Console.WriteLine("- Can not read file : {0} ({1})\r\n", path, e.Message);
                 return false;
             }
         }
