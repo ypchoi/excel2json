@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 namespace ExcelToJson
 {
@@ -17,7 +18,7 @@ namespace ExcelToJson
         {
             try
             {
-                using (StreamWriter file = new StreamWriter(path))
+                using (StreamWriter file = new StreamWriter(path, false, Encoding.UTF8))
                 {
                     file.WriteLine("[");
 
