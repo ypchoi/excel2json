@@ -1,4 +1,6 @@
-﻿namespace ExcelToJson
+﻿using System.Web;
+
+namespace ExcelToJson
 {
     abstract class Cell
     {
@@ -64,7 +66,7 @@
 
     class CellFloat : Cell
     {
-        float m_value;
+        float m_value = 0.0f;
 
         public CellFloat(uint columnIndex, CellScheme scheme)
             : base(columnIndex, scheme)
@@ -84,7 +86,7 @@
 
     class CellBool : Cell
     {
-        bool m_value;
+        bool m_value = false;
 
         public CellBool(uint columnIndex, CellScheme scheme)
             : base(columnIndex, scheme)
@@ -114,7 +116,7 @@
 
     class CellString : Cell
     {
-        string m_value;
+        string m_value = "";
 
         public CellString(uint columnIndex, CellScheme scheme)
             : base(columnIndex, scheme)
@@ -123,13 +125,18 @@
 
         public override bool Parse(string text)
         {
-            m_value = text;
+            m_value = EscapeForJson(text);
             return true;
         }
 
         public override string ToString()
         {
             return string.Format("\"{0}\":\"{1}\"", m_scheme.Name, m_value.ToString());
+        }
+
+        static string EscapeForJson(string s)
+        {
+            return HttpUtility.JavaScriptStringEncode(s);
         }
     }
 
